@@ -5,46 +5,68 @@ import (
 	"strings"
 )
 
-func Validate(str string) bool {
-	if str != "" {
-		if len(str) >= 11 && len(str) <= 14 {
-			str = strings.ReplaceAll(str, ".", "")
-			str = strings.ReplaceAll(str, "-", "")
-			str = strings.ReplaceAll(str, " ", "")
+type Cpf struct {
+	value string
+}
 
-			if !strings.HasPrefix(strings.Repeat(string(str[0]), len(str)), str) {
-				var d1, d2, dg1, dg2, rest, digito int
-				d1, d2, dg1, dg2, rest = 0, 0, 0, 0, 0
+func NewCpf(value string) (Cpf, error) {
+	if !validate(value) {
+		return Cpf{}, fmt.Errorf("invalid cpf")
+	}
+	return Cpf{value: value}, nil
+}
 
-				for nCount := 1; nCount < len(str)-1; nCount++ {
-					digito = int(str[nCount]) - '0'
-					d1 = d1 + (11-nCount)*digito
-					d2 = d2 + (12-nCount)*digito
-				}
-
-				rest = d1 % 11
-				dg1 = 0
-				if rest >= 2 {
-					dg1 = 11 - rest
-				}
-				d2 += 2 * dg1
-				rest = (d2 % 11)
-				dg2 = 0
-				if rest >= 2 {
-					dg2 = 11 - rest
-				}
-
-				nDigVerific := str[len(str)-2:]
-				nDigResult := fmt.Sprintf("%d%d", dg1, dg2)
-
-				return nDigVerific == nDigResult
-			} else {
-				return false
-			}
-		} else {
-			return false
-		}
-	} else {
+func validate(str string) bool {
+	cpf := clean(str)
+	if !hasValidLength(cpf) {
 		return false
 	}
+
+	if hasSameDigits(cpf) {
+		return false
+	}
+
+	dg1 := calculateDigit(cpf, 10)
+	dg2 := calculateDigit(cpf, 11)
+	return extractCheckDigit(cpf) == fmt.Sprintf("%d%d", dg1, dg2)
+}
+
+func extractCheckDigit(cpf string) string {
+	return cpf[len(cpf)-2:]
+}
+
+func calculateDigit(cpf string, factor int) int {
+	total := 0
+	for _, digit := range cpf {
+		if factor > 1 {
+			total += int(digit-'0') * factor
+			factor--
+		}
+	}
+	rest := total % 11
+	if rest < 2 {
+		return 0
+	} else {
+		return 11 - rest
+	}
+}
+
+func hasSameDigits(cpf string) bool {
+	for i := 1; i < len(cpf); i++ {
+		if cpf[i] != cpf[0] {
+			return false
+		}
+	}
+	return true
+}
+
+func hasValidLength(cpf string) bool {
+	return len(cpf) >= 11 && len(cpf) <= 14
+}
+
+func clean(str string) string {
+	str = strings.ReplaceAll(str, ".", "")
+	str = strings.ReplaceAll(str, "-", "")
+	str = strings.ReplaceAll(str, " ", "")
+	return str
 }

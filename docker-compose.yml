@@ -1,0 +1,16 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:15.3-alpine
+    restart: no
+    environment:
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5432:5432"
+
+#  adminer:
+#    image: adminer
+#    restart: no
+#    ports:
+#      - 8080:8080
