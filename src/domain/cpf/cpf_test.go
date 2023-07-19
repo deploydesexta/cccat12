@@ -1,7 +1,7 @@
 package cpf_test
 
 import (
-	"github.com/deploydesexta/cccat12/src/cpf"
+	"github.com/deploydesexta/cccat12/src/domain/cpf"
 	"testing"
 )
 
@@ -14,7 +14,7 @@ func TestCPFsValidos(t *testing.T) {
 	}
 
 	for _, c := range cpfs {
-		if _, err := cpf.NewCpf(c); err != nil {
+		if _, err := cpf.New(c); err != nil {
 			t.Errorf("CPF %s deveria ser válido", c)
 		}
 	}
@@ -31,7 +31,7 @@ func TestCPFsInvalidos(t *testing.T) {
 
 	expectedError := "invalid cpf"
 	for _, c := range cpfs {
-		_, err := cpf.NewCpf(c)
+		_, err := cpf.New(c)
 		if err == nil {
 			t.Errorf("CPF %s deveria ser inválido", c)
 		} else if err.Error() != expectedError {

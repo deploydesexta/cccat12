@@ -9,11 +9,15 @@ type Cpf struct {
 	value string
 }
 
-func NewCpf(value string) (Cpf, error) {
+func New(value string) (Cpf, error) {
 	if !validate(value) {
 		return Cpf{}, fmt.Errorf("invalid cpf")
 	}
 	return Cpf{value: value}, nil
+}
+
+func (c Cpf) Value() string {
+	return c.value
 }
 
 func validate(str string) bool {

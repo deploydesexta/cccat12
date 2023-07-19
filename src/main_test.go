@@ -125,7 +125,7 @@ func TestCreatePassenger(t *testing.T) {
 func TestCreatePassenger_InvalidDocument(t *testing.T) {
 	input := `{
 		"name": "Ciclano",
-    	"document": "111.338.630-87",
+    	"document": "11133863087",
     	"email": "ciclano@gmail.com"
 	}`
 
@@ -149,7 +149,7 @@ func TestCreatePassenger_InvalidDocument(t *testing.T) {
 	}
 
 	// Verify
-	expectedError := "Invalid cpf"
+	expectedError := "invalid cpf"
 	if string(body) != expectedError {
 		t.Errorf("Expected %s, got %s", expectedError, string(body))
 	}
@@ -237,7 +237,7 @@ func TestCreateDriver(t *testing.T) {
 		"name": "Fulano",
 		"document": "776.794.210-48",
 		"email": "fulano@gmail.com",
-		"carPlate": "ABC1234"
+		"carplate": "ABC1234"
 	}`
 
 	// Simulate server handling the request
@@ -277,9 +277,9 @@ func TestCreateDriver(t *testing.T) {
 func TestCreateDriver_InvalidDocument(t *testing.T) {
 	input := `{
 		"name": "Fulano",
-		"document": "111.794.210-48",
+		"document": "11179421048",
 		"email": "fulano@gmail.com",
-		"carPlate": "ABC1234"
+		"carplate": "ABC1234"
 	}`
 
 	// Simulate server handling the request
@@ -302,7 +302,7 @@ func TestCreateDriver_InvalidDocument(t *testing.T) {
 	}
 
 	// Verify
-	expectedError := "Invalid cpf"
+	expectedError := "invalid cpf"
 	if string(body) != expectedError {
 		t.Errorf("Expected %s, got %s", expectedError, string(body))
 	}
@@ -313,7 +313,7 @@ func TestGetDriver(t *testing.T) {
 		"name": "Fulano",
 		"document": "776.794.210-48",
 		"email": "fulano@gmail.com",
-		"carPlate": "ABC1234"
+		"carplate": "ABC1234"
 	}`
 
 	// Simulate server handling the request
@@ -358,7 +358,7 @@ func TestGetDriver(t *testing.T) {
 		Document string `json:"document"`
 		Email    string `json:"email"`
 		Name     string `json:"name"`
-		CarPlate string `json:"carPlate"`
+		CarPlate string `json:"carplate"`
 	}
 
 	// Verify response status code
@@ -393,6 +393,6 @@ func TestGetDriver(t *testing.T) {
 
 	expectedPlate := "ABC1234"
 	if response.CarPlate != expectedPlate {
-		t.Errorf("Expected carPlate '%s', got '%s'", expectedPlate, response.CarPlate)
+		t.Errorf("Expected carplate '%s', got '%s'", expectedPlate, response.CarPlate)
 	}
 }

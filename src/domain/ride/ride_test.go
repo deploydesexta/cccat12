@@ -1,7 +1,7 @@
 package ride_test
 
 import (
-	"github.com/deploydesexta/cccat12/src/ride"
+	"github.com/deploydesexta/cccat12/src/domain/ride"
 	"testing"
 	"time"
 )

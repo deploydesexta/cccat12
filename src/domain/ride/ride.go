@@ -1,7 +1,7 @@
 package ride
 
 import (
-	"github.com/deploydesexta/cccat12/src/segment"
+	"github.com/deploydesexta/cccat12/src/domain/segment"
 	"time"
 )
 
