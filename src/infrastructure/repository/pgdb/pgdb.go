@@ -6,6 +6,7 @@ import (
 	"log"
 )
 
+// New Frameworks and Drivers
 func New() *sql.DB {
 	connStr := "postgresql://postgres:123456@localhost/postgres?sslmode=disable"
 	db, err := sql.Open("postgres", connStr)

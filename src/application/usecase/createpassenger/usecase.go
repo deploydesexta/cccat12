@@ -22,8 +22,8 @@ type (
 	}
 )
 
-func New(repository repository.PassengerRepository) UseCase {
-	return UseCase{
+func New(repository repository.PassengerRepository) *UseCase {
+	return &UseCase{
 		repository: repository,
 	}
 }

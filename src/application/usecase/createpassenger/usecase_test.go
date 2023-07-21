@@ -6,6 +6,7 @@ import (
 	"github.com/deploydesexta/cccat12/src/application/usecase/createpassenger"
 	"github.com/deploydesexta/cccat12/src/application/usecase/getpassenger"
 	"github.com/deploydesexta/cccat12/src/infrastructure/repository/passengerpg"
+	"github.com/deploydesexta/cccat12/src/infrastructure/repository/pgdb"
 	"testing"
 )
 
@@ -55,7 +56,7 @@ func TestDeveriaCadastrarPassageiro_IntegratedNarrowTest(t *testing.T) {
 		Name:     expectedName,
 	}
 
-	createUseCase := createpassenger.New(passengerpg.New())
+	createUseCase := createpassenger.New(passengerpg.New(pgdb.New()))
 	_, err := createUseCase.Execute(context.Background(), createpassenger.Input(input))
 	if err != nil {
 		t.Errorf("Error executing use case: %v", err)
@@ -75,14 +76,14 @@ func TestDeveriaCadastrarPassageiro_IntegratedBroadTest(t *testing.T) {
 		Name:     expectedName,
 	}
 
-	createUseCase := createpassenger.New(passengerpg.New())
+	createUseCase := createpassenger.New(passengerpg.New(pgdb.New()))
 	d, err := createUseCase.Execute(context.Background(), createpassenger.Input(input))
 	if err != nil {
 		t.Errorf("Error executing create use case: %v", err)
 		return
 	}
 
-	getUseCase := getpassenger.New(passengerpg.New())
+	getUseCase := getpassenger.New(passengerpg.New(pgdb.New()))
 	r, err := getUseCase.Execute(context.Background(), getpassenger.Input(GetInput{d.PassengerId}))
 	if err != nil {
 		t.Errorf("Error executing get use case: %v", err)

@@ -23,8 +23,8 @@ type (
 	}
 )
 
-func New(repository repository.DriverRepository) UseCase {
-	return UseCase{
+func New(repository repository.DriverRepository) *UseCase {
+	return &UseCase{
 		repository: repository,
 	}
 }

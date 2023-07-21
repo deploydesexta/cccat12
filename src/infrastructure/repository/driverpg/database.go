@@ -2,10 +2,9 @@ package driverpg
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"github.com/deploydesexta/cccat12/src/domain/driver"
-	"github.com/deploydesexta/cccat12/src/infrastructure/repository/pgdb"
+	"github.com/deploydesexta/cccat12/src/infrastructure/repository"
 )
 
 const (
@@ -18,8 +17,9 @@ var (
 )
 
 type (
+	// DriverRepositoryDatabase Interface Adapter
 	DriverRepositoryDatabase struct {
-		db *sql.DB
+		conn repository.DbConn
 	}
 
 	DriverEntity struct {
@@ -31,12 +31,12 @@ type (
 	}
 )
 
-func New() DriverRepositoryDatabase {
-	return DriverRepositoryDatabase{db: pgdb.New()}
+func New(conn repository.DbConn) DriverRepositoryDatabase {
+	return DriverRepositoryDatabase{conn}
 }
 
 func (r DriverRepositoryDatabase) Save(ctx context.Context, d driver.Driver) error {
-	_, err := r.db.ExecContext(ctx, insertStatement, d.DriverId(), d.CarPlate().Value(), d.Document().Value(), d.Email().Value(), d.Name())
+	_, err := r.conn.ExecContext(ctx, insertStatement, d.DriverId(), d.CarPlate().Value(), d.Document().Value(), d.Email().Value(), d.Name())
 	if err != nil {
 		return err
 	}
@@ -44,7 +44,7 @@ func (r DriverRepositoryDatabase) Save(ctx context.Context, d driver.Driver) err
 }
 
 func (r DriverRepositoryDatabase) Get(ctx context.Context, driverId string) (driver.Driver, error) {
-	row := r.db.QueryRow(selectStatement, driverId)
+	row := r.conn.QueryRow(selectStatement, driverId)
 	if row == nil {
 		return driver.Driver{}, driverNotFound
 	}

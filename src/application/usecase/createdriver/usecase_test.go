@@ -6,6 +6,7 @@ import (
 	"github.com/deploydesexta/cccat12/src/application/usecase/createdriver"
 	"github.com/deploydesexta/cccat12/src/application/usecase/getdriver"
 	"github.com/deploydesexta/cccat12/src/infrastructure/repository/driverpg"
+	"github.com/deploydesexta/cccat12/src/infrastructure/repository/pgdb"
 	"testing"
 )
 
@@ -60,7 +61,7 @@ func TestDeveriaCadastrarMotorista_IntegratedNarrowTest(t *testing.T) {
 		Name:     expectedName,
 	}
 
-	createUseCase := createdriver.New(driverpg.New())
+	createUseCase := createdriver.New(driverpg.New(pgdb.New()))
 	_, err := createUseCase.Execute(context.Background(), createdriver.Input(input))
 	if err != nil {
 		t.Errorf("Error executing use case: %v", err)
@@ -82,14 +83,14 @@ func TestDeveriaCadastrarMotorista_IntegratedBroadTest(t *testing.T) {
 		Name:     expectedName,
 	}
 
-	createUseCase := createdriver.New(driverpg.New())
+	createUseCase := createdriver.New(driverpg.New(pgdb.New()))
 	d, err := createUseCase.Execute(context.Background(), createdriver.Input(input))
 	if err != nil {
 		t.Errorf("Error executing create use case: %v", err)
 		return
 	}
 
-	getUseCase := getdriver.New(driverpg.New())
+	getUseCase := getdriver.New(driverpg.New(pgdb.New()))
 	r, err := getUseCase.Execute(context.Background(), getdriver.Input(GetInput{d.DriverId}))
 	if err != nil {
 		t.Errorf("Error executing get use case: %v", err)

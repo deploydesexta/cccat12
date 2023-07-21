@@ -185,7 +185,7 @@ func TestGetPassenger(t *testing.T) {
 		t.Errorf("Error parsing response body: %v", err)
 	}
 
-	// Simulate GET passenger request
+	// Simulate Get passenger request
 	resp, err = http.Get(fmt.Sprintf("http://localhost:3000/passengers/%s", createResponse.PassengerId))
 	if err != nil {
 		t.Errorf("Http connection has failed")
@@ -344,7 +344,7 @@ func TestGetDriver(t *testing.T) {
 		t.Errorf("Error parsing response body: %v", err)
 	}
 
-	// Simulate GET passenger request
+	// Simulate Get passenger request
 	resp, err = http.Get(fmt.Sprintf("http://localhost:3000/drivers/%s", createResponse.DriverId))
 	if err != nil {
 		t.Errorf("Http connection has failed")

@@ -2,10 +2,9 @@ package passengerpg
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"github.com/deploydesexta/cccat12/src/domain/passenger"
-	"github.com/deploydesexta/cccat12/src/infrastructure/repository/pgdb"
+	"github.com/deploydesexta/cccat12/src/infrastructure/repository"
 )
 
 const (
@@ -18,8 +17,9 @@ var (
 )
 
 type (
+	// PassengerRepositoryDatabase Interface Adapter
 	PassengerRepositoryDatabase struct {
-		db *sql.DB
+		conn repository.DbConn
 	}
 
 	PassengerEntity struct {
@@ -30,12 +30,12 @@ type (
 	}
 )
 
-func New() PassengerRepositoryDatabase {
-	return PassengerRepositoryDatabase{db: pgdb.New()}
+func New(conn repository.DbConn) PassengerRepositoryDatabase {
+	return PassengerRepositoryDatabase{conn}
 }
 
 func (r PassengerRepositoryDatabase) Save(ctx context.Context, p passenger.Passenger) error {
-	_, err := r.db.ExecContext(ctx, insertStatement, p.PassengerId(), p.Document().Value(), p.Email().Value(), p.Name())
+	_, err := r.conn.ExecContext(ctx, insertStatement, p.PassengerId(), p.Document().Value(), p.Email().Value(), p.Name())
 	if err != nil {
 		return err
 	}
@@ -43,7 +43,7 @@ func (r PassengerRepositoryDatabase) Save(ctx context.Context, p passenger.Passe
 }
 
 func (r PassengerRepositoryDatabase) Get(ctx context.Context, driverId string) (passenger.Passenger, error) {
-	row := r.db.QueryRow(selectStatement, driverId)
+	row := r.conn.QueryRow(selectStatement, driverId)
 	if row == nil {
 		return passenger.Passenger{}, passengerNotFound
 	}
