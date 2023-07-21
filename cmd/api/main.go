@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/deploydesexta/cccat12/src/application/usecase/calculateride"
 	"github.com/deploydesexta/cccat12/src/application/usecase/createdriver"
 	"github.com/deploydesexta/cccat12/src/application/usecase/createpassenger"
 	"github.com/deploydesexta/cccat12/src/application/usecase/getdriver"
@@ -21,13 +22,14 @@ func main() {
 	driverRepository := driverpg.New(conn)
 	passengerRepository := passengerpg.New(conn)
 	// UseCases
+	calculateRideUseCase := calculateride.New()
 	createDriverUseCase := createdriver.New(driverRepository)
 	getDriverUseCase := getdriver.New(driverRepository)
 	createPassengerUseCase := createpassenger.New(passengerRepository)
 	getPassengerUseCase := getpassenger.New(passengerRepository)
 	// Frameworks
-	router := http.NewRootRouter(createDriverUseCase, getDriverUseCase, createPassengerUseCase, getPassengerUseCase)
-
+	router := http.NewRootRouter(calculateRideUseCase, createDriverUseCase, getDriverUseCase, createPassengerUseCase, getPassengerUseCase)
+	//server := NewFiberRouterAdapter()
 	server := NewEchoRouterAdapter()
 	server.Router(router)
 	log.Fatal(server.Start(":3000"))

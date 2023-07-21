@@ -2,6 +2,7 @@ package http
 
 import (
 	"context"
+	"github.com/deploydesexta/cccat12/src/application/usecase/calculateride"
 	"github.com/deploydesexta/cccat12/src/application/usecase/createdriver"
 	"github.com/deploydesexta/cccat12/src/application/usecase/createpassenger"
 	"github.com/deploydesexta/cccat12/src/application/usecase/getdriver"
@@ -31,6 +32,7 @@ type (
 	}
 
 	MainRouter struct {
+		calculateRide   *calculateride.UseCase
 		createDriver    *createdriver.UseCase
 		getDriver       *getdriver.UseCase
 		createPassenger *createpassenger.UseCase
@@ -39,12 +41,14 @@ type (
 )
 
 func NewRootRouter(
+	calculateRide *calculateride.UseCase,
 	createDriver *createdriver.UseCase,
 	getDriver *getdriver.UseCase,
 	createPassenger *createpassenger.UseCase,
 	getPassenger *getpassenger.UseCase,
 ) Router {
 	return &MainRouter{
+		calculateRide,
 		createDriver,
 		getDriver,
 		createPassenger,
@@ -53,9 +57,9 @@ func NewRootRouter(
 }
 
 func (c *MainRouter) Bind(s Server) {
-	s.Post("/calculate_ride", CalculateRide)
-	s.Post("/passengers", CreatePassenger)
-	s.Get("/passengers/:passengerId", GetPassenger)
-	s.Post("/drivers", CreateDriver)
-	s.Get("/drivers/:driverId", GetDriver)
+	s.Post("/calculate_ride", c.CalculateRide)
+	s.Post("/passengers", c.CreatePassenger)
+	s.Get("/passengers/:passengerId", c.GetPassenger)
+	s.Post("/drivers", c.CreateDriver)
+	s.Get("/drivers/:driverId", c.GetDriver)
 }

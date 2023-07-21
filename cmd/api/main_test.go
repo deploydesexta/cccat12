@@ -31,7 +31,7 @@ func TestCalculateRide_DuringDay(t *testing.T) {
 
 	// Parse response body
 	var response struct {
-		Price float64 `json:"price"`
+		Price float64 `jsonutil:"price"`
 	}
 
 	body, err := io.ReadAll(resp.Body)
@@ -105,7 +105,7 @@ func TestCreatePassenger(t *testing.T) {
 
 	// Parse response body
 	var response struct {
-		PassengerId *string `json:"PassengerId"`
+		PassengerId *string `jsonutil:"PassengerId"`
 	}
 
 	body, err := io.ReadAll(resp.Body)
@@ -172,7 +172,7 @@ func TestGetPassenger(t *testing.T) {
 
 	// Parse response body
 	var createResponse struct {
-		PassengerId string `json:"passengerId"`
+		PassengerId string `jsonutil:"passengerId"`
 	}
 
 	body, err := io.ReadAll(resp.Body)
@@ -195,10 +195,10 @@ func TestGetPassenger(t *testing.T) {
 
 	// Parse response body
 	var response struct {
-		Id       string `json:"id"`
-		Document string `json:"document"`
-		Email    string `json:"email"`
-		Name     string `json:"name"`
+		Id       string `jsonutil:"id"`
+		Document string `jsonutil:"document"`
+		Email    string `jsonutil:"email"`
+		Name     string `jsonutil:"name"`
 	}
 
 	// Verify response status code
@@ -255,7 +255,7 @@ func TestCreateDriver(t *testing.T) {
 
 	// Parse response body
 	var response struct {
-		DriverId *string `json:"driverId"`
+		DriverId *string `jsonutil:"driverId"`
 	}
 
 	body, err := io.ReadAll(resp.Body)
@@ -331,7 +331,7 @@ func TestGetDriver(t *testing.T) {
 
 	// Parse response body
 	var createResponse struct {
-		DriverId string `json:"driverId"`
+		DriverId string `jsonutil:"driverId"`
 	}
 
 	body, err := io.ReadAll(resp.Body)
@@ -354,11 +354,11 @@ func TestGetDriver(t *testing.T) {
 
 	// Parse response body
 	var response struct {
-		Id       string `json:"id"`
-		Document string `json:"document"`
-		Email    string `json:"email"`
-		Name     string `json:"name"`
-		CarPlate string `json:"carplate"`
+		Id       string `jsonutil:"id"`
+		Document string `jsonutil:"document"`
+		Email    string `jsonutil:"email"`
+		Name     string `jsonutil:"name"`
+		CarPlate string `jsonutil:"carplate"`
 	}
 
 	// Verify response status code

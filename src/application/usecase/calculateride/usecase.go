@@ -21,8 +21,8 @@ type (
 	}
 )
 
-func NewUseCase() UseCase {
-	return UseCase{}
+func New() *UseCase {
+	return &UseCase{}
 }
 
 func (c UseCase) Execute(input Input) (Output, error) {

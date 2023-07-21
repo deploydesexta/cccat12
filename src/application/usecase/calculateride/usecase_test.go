@@ -26,7 +26,7 @@ func TestCalculateRide_DuringDay(t *testing.T) {
 		},
 	}
 
-	useCase := calculateride.NewUseCase()
+	useCase := calculateride.New()
 	r, err := useCase.Execute(calculateride.Input(input))
 	if err != nil {
 		t.Errorf("Error executing use case: %v", err)
@@ -51,7 +51,7 @@ func TestCalculateRide_InvalidDistance(t *testing.T) {
 		},
 	}
 
-	useCase := calculateride.NewUseCase()
+	useCase := calculateride.New()
 	_, err := useCase.Execute(calculateride.Input(input))
 
 	if err.Error() != expectedErrorMessage {
