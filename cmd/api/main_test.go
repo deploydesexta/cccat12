@@ -11,8 +11,9 @@ import (
 
 func TestCalculateRide_DuringDay(t *testing.T) {
 	input := `{
-		"segments": [
-			{ "distance": 10, "date": "2021-03-01T10:00:00" }
+		"positions": [
+			{ "lat": -27.584905257808835, "long": -48.545022195325124, "date": "2021-03-01T10:00:00" },
+			{ "lat": -27.496887588317275, "long": -48.522234807851476, "date": "2021-03-01T10:00:00" }
 		]
 	}`
 
@@ -31,7 +32,7 @@ func TestCalculateRide_DuringDay(t *testing.T) {
 
 	// Parse response body
 	var response struct {
-		Price float64 `jsonutil:"price"`
+		Price float64 `json:"price"`
 	}
 
 	body, err := io.ReadAll(resp.Body)
@@ -48,38 +49,6 @@ func TestCalculateRide_DuringDay(t *testing.T) {
 	expectedPrice := 21.0
 	if response.Price != expectedPrice {
 		t.Errorf("Expected price %.2f, got %.2f", expectedPrice, response.Price)
-	}
-}
-
-func TestCalculateRide_InvalidDistance(t *testing.T) {
-	input := `{
-		"segments": [
-			{ "distance": -10, "date": "2021-03-01T10:00:00" }
-		]
-	}`
-
-	// Simulate server handling the request
-	resp, err := http.Post("http://localhost:3000/calculate_ride", "application/json", strings.NewReader(input))
-	if err != nil {
-		t.Errorf("Http connection has failed")
-		return
-	}
-	defer resp.Body.Close()
-
-	// Verify response status code
-	if resp.StatusCode != http.StatusUnprocessableEntity {
-		t.Errorf("Expected status %d, got %d", http.StatusUnprocessableEntity, resp.StatusCode)
-	}
-
-	// Verify response body
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		t.Errorf("Error reading response body: %v", err)
-	}
-
-	expectedErrorMessage := "invalid distance"
-	if string(body) != expectedErrorMessage {
-		t.Errorf("Expected error message '%s', got '%s'", expectedErrorMessage, string(body))
 	}
 }
 
@@ -105,7 +74,7 @@ func TestCreatePassenger(t *testing.T) {
 
 	// Parse response body
 	var response struct {
-		PassengerId *string `jsonutil:"PassengerId"`
+		PassengerId *string `json:"PassengerId"`
 	}
 
 	body, err := io.ReadAll(resp.Body)
@@ -172,7 +141,7 @@ func TestGetPassenger(t *testing.T) {
 
 	// Parse response body
 	var createResponse struct {
-		PassengerId string `jsonutil:"passengerId"`
+		PassengerId string `json:"passengerId"`
 	}
 
 	body, err := io.ReadAll(resp.Body)
@@ -195,10 +164,10 @@ func TestGetPassenger(t *testing.T) {
 
 	// Parse response body
 	var response struct {
-		Id       string `jsonutil:"id"`
-		Document string `jsonutil:"document"`
-		Email    string `jsonutil:"email"`
-		Name     string `jsonutil:"name"`
+		Id       string `json:"id"`
+		Document string `json:"document"`
+		Email    string `json:"email"`
+		Name     string `json:"name"`
 	}
 
 	// Verify response status code
@@ -255,7 +224,7 @@ func TestCreateDriver(t *testing.T) {
 
 	// Parse response body
 	var response struct {
-		DriverId *string `jsonutil:"driverId"`
+		DriverId *string `json:"driverId"`
 	}
 
 	body, err := io.ReadAll(resp.Body)
@@ -331,7 +300,7 @@ func TestGetDriver(t *testing.T) {
 
 	// Parse response body
 	var createResponse struct {
-		DriverId string `jsonutil:"driverId"`
+		DriverId string `json:"driverId"`
 	}
 
 	body, err := io.ReadAll(resp.Body)
@@ -354,11 +323,11 @@ func TestGetDriver(t *testing.T) {
 
 	// Parse response body
 	var response struct {
-		Id       string `jsonutil:"id"`
-		Document string `jsonutil:"document"`
-		Email    string `jsonutil:"email"`
-		Name     string `jsonutil:"name"`
-		CarPlate string `jsonutil:"carplate"`
+		Id       string `json:"id"`
+		Document string `json:"document"`
+		Email    string `json:"email"`
+		Name     string `json:"name"`
+		CarPlate string `json:"carplate"`
 	}
 
 	// Verify response status code

@@ -2,7 +2,7 @@ package nooprepo
 
 import (
 	"context"
-	"github.com/deploydesexta/cccat12/src/domain/passenger"
+	"github.com/deploydesexta/cccat12/internal/domain/passenger"
 )
 
 type InMemoryPassengerRepository struct {
@@ -15,11 +15,11 @@ func NewPassengerRepository() *InMemoryPassengerRepository {
 	}
 }
 
-func (r InMemoryPassengerRepository) Save(ctx context.Context, d passenger.Passenger) error {
+func (r InMemoryPassengerRepository) Save(_ context.Context, d passenger.Passenger) error {
 	r.drivers[d.PassengerId()] = d
 	return nil
 }
 
-func (r InMemoryPassengerRepository) Get(ctx context.Context, driverId string) (passenger.Passenger, error) {
+func (r InMemoryPassengerRepository) Get(_ context.Context, driverId string) (passenger.Passenger, error) {
 	return r.drivers[driverId], nil
 }
